@@ -13,6 +13,12 @@ public class AlertDetails extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alert_details);
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         TextView textView = findViewById(R.id.textView);
         Intent intent = getIntent();
         //PendingIntent pendingIntent = PendingIntent.getActivity(this,0,intent,0);
