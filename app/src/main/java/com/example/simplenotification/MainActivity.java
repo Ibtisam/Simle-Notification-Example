@@ -7,6 +7,7 @@ import androidx.core.app.NotificationManagerCompat;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,7 +17,10 @@ import android.widget.Button;
 public class MainActivity extends AppCompatActivity {
 
     private static final String CHANNEL_ID = "NOTIF_C_1";
-    private int notif_A_Id, notif_B_Id, notif_C_Id;
+    private static final int PI_TAP_ID = 1;
+    private static final int PI_ABT_ID = 2;
+    private static final int PI_TAP_RE_ID = 3;
+    private int notif_A_Id, notif_B_Id, notif_C_Id, notif_D_Id;
     private NotificationManagerCompat notificationManager;
 
     @Override
@@ -28,9 +32,10 @@ public class MainActivity extends AppCompatActivity {
         notif_A_Id = 101;
         notif_B_Id = 102;
         notif_C_Id = 103;
+        notif_D_Id = 104;
         notificationManager = NotificationManagerCompat.from(this);
-
         Button sim_b = findViewById(R.id.button_s);
+
         sim_b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -57,11 +62,11 @@ public class MainActivity extends AppCompatActivity {
 
                 // Create an explicit intent for an Activity in your app
                 Intent tapIntent = new Intent(MainActivity.this, AlertDetails.class);
-                tapIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                tapIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK |Intent.FLAG_ACTIVITY_NEW_TASK);
                 tapIntent.putExtra("MESS", "This Activity is opened by tap action");
 
                 //creating a pending intent
-                final PendingIntent tapPendingIntent = PendingIntent.getActivity(MainActivity.this, 0, tapIntent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
+                final PendingIntent tapPendingIntent = PendingIntent.getActivity(MainActivity.this, PI_TAP_ID, tapIntent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
                 //setting pending intent
                 builder.setContentIntent(tapPendingIntent);
                 builder.setAutoCancel(true);
@@ -84,18 +89,44 @@ public class MainActivity extends AppCompatActivity {
 
                 // Create an explicit intent for an Activity in your app
                 Intent actionIntent = new Intent(MainActivity.this, AlertDetails.class);
-                actionIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                actionIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK |Intent.FLAG_ACTIVITY_NEW_TASK);
                 actionIntent.putExtra("MESS", "This Activity is opened by an action button");
 
                 //creating a pending intent
-                final PendingIntent actionPendingIntent = PendingIntent.getActivity(MainActivity.this, 0, actionIntent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
+                final PendingIntent actionPendingIntent = PendingIntent.getActivity(MainActivity.this, PI_ABT_ID, actionIntent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
                 //adding action button
                 builder.addAction(R.drawable.ic_notification, getString(R.string.notif_ac), actionPendingIntent);
-                builder.setContentIntent(actionPendingIntent);
+                //builder.setContentIntent(actionPendingIntent);
                 //builder.setAutoCancel(true);
                 // notificationId is a unique int for each notification that you must define
                 //show the notification
                 notificationManager.notify(notif_C_Id, builder.build());
+            }
+        });
+
+        Button button_tr = findViewById(R.id.button_tr);
+        button_tr.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NotificationCompat.Builder builder = new NotificationCompat.Builder(MainActivity.this, CHANNEL_ID);
+                builder.setSmallIcon(R.drawable.ic_notification);
+                builder.setContentTitle("Notification with regular flow");
+                builder.setContentText("Tap me open a Regular Activity");
+                builder.setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+                // Create an explicit intent for an Activity in your app
+                Intent intent = new Intent(MainActivity.this, AlertDetailsRegular.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK |Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("MESS", "This Activity is part of regular flow");
+                // Create the TaskStackBuilder and add the intent, which inflates the back stack
+                TaskStackBuilder stackBuilder = TaskStackBuilder.create(MainActivity.this);
+                stackBuilder.addNextIntentWithParentStack(intent);
+
+                final PendingIntent pendingIntentReg = stackBuilder.getPendingIntent(PI_TAP_RE_ID, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
+
+                builder.setContentIntent(pendingIntentReg);
+
+                notificationManager.notify(notif_D_Id, builder.build());
             }
         });
 

@@ -11,34 +11,44 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="35dp"
+        android:layout_marginBottom="48dp"
         android:text="@string/b_1_t"
-        app:layout_constraintBottom_toTopOf="@+id/button_t"
+        app:layout_constraintBottom_toTopOf="@+id/button_a"
         app:layout_constraintStart_toStartOf="@+id/button_t" />
 
     <Button
         android:id="@+id/button_t"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="14dp"
+        android:layout_marginEnd="13dp"
         android:text="@string/b_2_t"
-        app:layout_constraintBottom_toTopOf="@+id/button_a"
-        app:layout_constraintStart_toStartOf="@+id/button_a" />
+        app:layout_constraintEnd_toEndOf="@+id/button_a"
+        app:layout_constraintTop_toBottomOf="@+id/button_s" />
 
     <Button
         android:id="@+id/button_r"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="14dp"
+        android:layout_marginStart="26dp"
         android:text="@string/b_3_t"
-        app:layout_constraintStart_toStartOf="@+id/button_a"
-        app:layout_constraintTop_toBottomOf="@+id/button_a" />
+        app:layout_constraintStart_toStartOf="@+id/button_tr"
+        app:layout_constraintTop_toBottomOf="@+id/button_tr" />
 
     <Button
         android:id="@+id/button_a"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="208dp"
+        android:layout_marginStart="12dp"
         android:text="@string/b_4_t"
+        app:layout_constraintBottom_toTopOf="@+id/button_tr"
+        app:layout_constraintStart_toStartOf="@+id/button_tr" />
+
+    <Button
+        android:id="@+id/button_tr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="256dp"
+        android:text="Notif with Tap Regular flow"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
